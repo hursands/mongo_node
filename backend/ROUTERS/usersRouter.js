@@ -5,7 +5,7 @@ const models = require("./../models.js");
 usersRouter.get("/", (req, res) => {
     models.User.find({}, (err, result) => {
         if(err) return console.log(err);
-        res.send(results);
+        res.send(result);
     });
 });
 
@@ -27,12 +27,14 @@ usersRouter.post("/", (req, res) => {
 
     user.save(err => {
         if(err) return console.log(err);
-        res.send("car added");
+        res.send("user added");
     });
 });
 
 usersRouter.post('/addCar', async (req, res) => {
-    const { userId, car } = req.body;
+    const { userId, carId } = req.body;
+
+    let car = await models.Car.findById(carId);
 
     let user = await models.User.findById(userId);
     user.cars.push(car);
